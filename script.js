@@ -358,6 +358,39 @@ const RESOURCE_LIBRARY = [
     { id: 150, title: "Family Worship Ideas", category: "parent-resources", description: "Home worship planning", ageGroup: "Parents", icon: "👨‍👩‍👧" }
 ];
 
+// Shopping Cart Data
+const DEFAULT_CART_ITEMS = [
+    {
+        id: 'kit-family-night',
+        title: 'Family Faith Night Kit',
+        description: 'Includes printable devotion, craft template, and conversation cards for ages 4-10.',
+        price: 18.5,
+        quantity: 1,
+        badge: 'Most loved by parents',
+        image: 'https://images.unsplash.com/photo-1519223400710-6da9e1b777ea?auto=format&fit=crop&w=300&q=60'
+    },
+    {
+        id: 'activity-prek',
+        title: 'Pre-K Activity Bundle',
+        description: 'Coloring sheets, fine-motor practice, and a short lesson outline for Sunday morning.',
+        price: 9.75,
+        quantity: 2,
+        badge: 'Instant download',
+        image: 'https://images.unsplash.com/photo-1545239351-1141bd82e8a6?auto=format&fit=crop&w=300&q=60'
+    },
+    {
+        id: 'craft-pack',
+        title: 'Seasonal Craft Pack',
+        description: 'Four easy crafts with supply lists and leader tips for mixed-age classrooms.',
+        price: 14.0,
+        quantity: 1,
+        badge: 'Teacher favorite',
+        image: 'https://images.unsplash.com/photo-1617032213042-09a6b44eaff2?auto=format&fit=crop&w=300&q=60'
+    }
+];
+
+let shoppingCart = [...DEFAULT_CART_ITEMS];
+
 // Demo user credentials
 const DEMO_USERS = {
     parent: {
@@ -392,9 +425,9 @@ let currentSubcategories = [];
 
 // Page Navigation
 function showPage(pageName) {
-    const pageIds = ['home', 'about', 'staff', 'prek', 'elementary', 'events', 'volunteer', 
-                     'resources', 'gallery', 'portals', 'parent-portal', 'teacher-portal', 
-                     'contact', 'parent-dashboard', 'teacher-dashboard', 'lesson-plan-builder', 
+    const pageIds = ['home', 'about', 'staff', 'prek', 'elementary', 'events', 'volunteer',
+                     'resources', 'gallery', 'portals', 'parent-portal', 'teacher-portal',
+                     'cart', 'contact', 'parent-dashboard', 'teacher-dashboard', 'lesson-plan-builder',
                      'resource-library', 'teacher-messages', 'admin-dashboard'];
     
     pageIds.forEach(page => {
@@ -426,6 +459,7 @@ function showPage(pageName) {
         'resources': 'Resources',
         'gallery': 'Photo Gallery',
         'portals': 'Portal Access',
+        'cart': 'Shopping Cart',
         'parent-portal': 'Parent Portal',
         'teacher-portal': 'Teacher Portal',
         'parent-dashboard': 'Parent Dashboard',
@@ -454,6 +488,10 @@ function showPage(pageName) {
         setStaffLoginRole('teacher');
     }
 
+    if (pageName === 'cart') {
+        renderShoppingCart();
+    }
+
     // On loading teacher-dashboard, re-render the lesson list
     if (pageName === 'teacher-dashboard') {
         renderLessonPlans();
@@ -478,6 +516,104 @@ function showPage(pageName) {
     }
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function formatCurrency(amount) {
+    return `$${amount.toFixed(2)}`;
+}
+
+function calculateCartTotals() {
+    const subtotal = shoppingCart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    const tax = Number((subtotal * 0.07).toFixed(2));
+    const total = Number((subtotal + tax).toFixed(2));
+    return { subtotal, tax, total };
+}
+
+function renderShoppingCart() {
+    const list = document.getElementById('cart-items');
+    const count = document.getElementById('cart-count');
+    const subtotalEl = document.getElementById('cart-subtotal');
+    const taxEl = document.getElementById('cart-tax');
+    const totalEl = document.getElementById('cart-total');
+
+    if (!list || !count || !subtotalEl || !taxEl || !totalEl) {
+        return;
+    }
+
+    if (!shoppingCart.length) {
+        list.innerHTML = `
+            <article class="cart-item empty-cart">
+                <div class="cart-item-details">
+                    <h4>Your cart is empty</h4>
+                    <p>Browse our resources to add printables, crafts, and lesson kits.</p>
+                    <button class="btn btn-secondary" onclick="showPage('resources'); return false;">Explore Resources</button>
+                </div>
+            </article>
+        `;
+        count.textContent = '0 items';
+        subtotalEl.textContent = '$0.00';
+        taxEl.textContent = '$0.00';
+        totalEl.textContent = '$0.00';
+        return;
+    }
+
+    const fragment = document.createDocumentFragment();
+
+    shoppingCart.forEach(item => {
+        const article = document.createElement('article');
+        article.className = 'cart-item';
+        article.innerHTML = `
+            <img src="${item.image}" alt="${item.title} preview">
+            <div class="cart-item-details">
+                <h4>${item.title}</h4>
+                <p>${item.description}</p>
+                <div class="cart-item-meta">
+                    <span class="badge badge-info">${item.badge}</span>
+                    <span>${formatCurrency(item.price)} each</span>
+                </div>
+            </div>
+            <div class="cart-item-actions">
+                <div class="quantity-controls" aria-label="Update quantity for ${item.title}">
+                    <button onclick="adjustCartQuantity('${item.id}', -1)" aria-label="Decrease quantity">-</button>
+                    <span>${item.quantity}</span>
+                    <button onclick="adjustCartQuantity('${item.id}', 1)" aria-label="Increase quantity">+</button>
+                </div>
+                <div class="cart-item-price">${formatCurrency(item.price * item.quantity)}</div>
+                <button class="btn btn-secondary" onclick="removeCartItem('${item.id}')">Remove</button>
+            </div>
+        `;
+
+        fragment.appendChild(article);
+    });
+
+    list.innerHTML = '';
+    list.appendChild(fragment);
+
+    const itemCount = shoppingCart.reduce((sum, item) => sum + item.quantity, 0);
+    const totals = calculateCartTotals();
+
+    count.textContent = `${itemCount} ${itemCount === 1 ? 'item' : 'items'}`;
+    subtotalEl.textContent = formatCurrency(totals.subtotal);
+    taxEl.textContent = formatCurrency(totals.tax);
+    totalEl.textContent = formatCurrency(totals.total);
+}
+
+function adjustCartQuantity(itemId, delta) {
+    const item = shoppingCart.find(product => product.id === itemId);
+    if (!item) return;
+
+    item.quantity = Math.max(0, item.quantity + delta);
+
+    if (item.quantity === 0) {
+        shoppingCart = shoppingCart.filter(product => product.id !== itemId);
+    }
+
+    renderShoppingCart();
+}
+
+function removeCartItem(itemId) {
+    shoppingCart = shoppingCart.filter(product => product.id !== itemId);
+    renderShoppingCart();
 }
 
 function setStaffLoginRole(role) {
