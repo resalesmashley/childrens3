@@ -720,7 +720,7 @@ function renderShoppingCart() {
                 <div class="cart-item-details">
                     <h4>Your cart is empty</h4>
                     <p>Browse our resources to add printables, crafts, and lesson kits.</p>
-                    <button class="btn btn-secondary" onclick="showPage('store'); return false;">Continue shopping</button>
+                    <button class="btn btn-secondary" onclick="showPage('resources'); return false;">Continue shopping</button>
                 </div>
             </article>
         `;
