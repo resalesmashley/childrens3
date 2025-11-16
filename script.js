@@ -391,6 +391,15 @@ const DEFAULT_CART_ITEMS = [
 
 let shoppingCart = [...DEFAULT_CART_ITEMS];
 
+const DEMO_PAYMENT_PROFILE = {
+    email: 'parent@demo.com',
+    name: 'Jennifer Smith',
+    cardNumber: '4242 4242 4242 4242',
+    expiry: '12/27',
+    cvc: '123',
+    zip: '43001'
+};
+
 // Store catalog
 const STORE_PRODUCTS = [
     {
@@ -665,6 +674,35 @@ function calculateCartTotals() {
     return { subtotal, tax, total };
 }
 
+function updatePaymentPanel(totals = calculateCartTotals()) {
+    const payLabel = document.getElementById('payment-total-label');
+    const submitBtn = document.getElementById('submit-payment');
+    const checkoutBtn = document.getElementById('cart-checkout-button');
+    const paymentStatus = document.getElementById('payment-status');
+
+    if (payLabel) {
+        payLabel.textContent = `Total: ${formatCurrency(totals.total)}`;
+    }
+
+    if (submitBtn) {
+        submitBtn.textContent = totals.total === 0 ? 'Complete $0 checkout' : `Pay ${formatCurrency(totals.total)}`;
+        submitBtn.disabled = shoppingCart.length === 0;
+    }
+
+    if (checkoutBtn) {
+        checkoutBtn.onclick = () => {
+            document.getElementById('checkout-payment')?.scrollIntoView({ behavior: 'smooth' });
+            return false;
+        };
+        checkoutBtn.disabled = shoppingCart.length === 0;
+    }
+
+    if (paymentStatus && shoppingCart.length === 0) {
+        paymentStatus.textContent = 'Add items to your cart before checking out.';
+        paymentStatus.classList.add('error');
+    }
+}
+
 function renderShoppingCart() {
     const list = document.getElementById('cart-items');
     const count = document.getElementById('cart-count');
@@ -682,6 +720,15 @@ function renderShoppingCart() {
                 <div class="cart-item-details">
                     <h4>Your cart is empty</h4>
                     <p>Browse our resources to add printables, crafts, and lesson kits.</p>
+                    <button class="btn btn-secondary" onclick="showPage('resources'); return false;">Continue shopping</button>
+                </div>
+            </article>
+        `;
+        list.innerHTML = `
+            <article class="cart-item empty-cart">
+                <div class="cart-item-details">
+                    <h4>Your cart is empty</h4>
+                    <p>Browse our resources to add printables, crafts, and lesson kits.</p>
                     <button class="btn btn-secondary" onclick="showPage('resources'); return false;">Explore Resources</button>
                 </div>
             </article>
@@ -690,6 +737,7 @@ function renderShoppingCart() {
         subtotalEl.textContent = '$0.00';
         taxEl.textContent = '$0.00';
         totalEl.textContent = '$0.00';
+        updatePaymentPanel({ subtotal: 0, tax: 0, total: 0 });
         return;
     }
 
@@ -722,6 +770,18 @@ function renderShoppingCart() {
         fragment.appendChild(article);
     });
 
+        list.innerHTML = '';
+        list.appendChild(fragment);
+
+        const itemCount = shoppingCart.reduce((sum, item) => sum + item.quantity, 0);
+        const totals = calculateCartTotals();
+
+        count.textContent = `${itemCount} ${itemCount === 1 ? 'item' : 'items'}`;
+        subtotalEl.textContent = formatCurrency(totals.subtotal);
+        taxEl.textContent = formatCurrency(totals.tax);
+        totalEl.textContent = formatCurrency(totals.total);
+
+        updatePaymentPanel(totals);
     list.innerHTML = '';
     list.appendChild(fragment);
 
@@ -809,6 +869,8 @@ function addStoreProductToCart(productId) {
         renderShoppingCart();
     }
 
+    updatePaymentPanel(calculateCartTotals());
+
     status.textContent = `${product.title} added to cart. ${product.price === 0 ? 'It will be ready to print after checkout.' : 'Continue to checkout when you are ready.'}`;
     status.classList.add('active');
 
@@ -831,6 +893,127 @@ function adjustCartQuantity(itemId, delta) {
 function removeCartItem(itemId) {
     shoppingCart = shoppingCart.filter(product => product.id !== itemId);
     renderShoppingCart();
+}
+
+
+function prefillDemoWallet() {
+    const email = document.getElementById('payment-email');
+    const name = document.getElementById('card-name');
+    const number = document.getElementById('card-number');
+    const expiry = document.getElementById('card-expiry');
+    const cvc = document.getElementById('card-cvc');
+    const zip = document.getElementById('billing-zip');
+    const status = document.getElementById('payment-status');
+
+    if (email) email.value = DEMO_PAYMENT_PROFILE.email;
+    if (name) name.value = DEMO_PAYMENT_PROFILE.name;
+    if (number) number.value = DEMO_PAYMENT_PROFILE.cardNumber;
+    if (expiry) expiry.value = DEMO_PAYMENT_PROFILE.expiry;
+    if (cvc) cvc.value = DEMO_PAYMENT_PROFILE.cvc;
+    if (zip) zip.value = DEMO_PAYMENT_PROFILE.zip;
+
+    if (status) {
+        status.textContent = 'Demo wallet applied. Submit to simulate payment approval.';
+        status.classList.remove('error');
+    }
+}
+
+function validatePaymentForm() {
+    const requiredFields = ['payment-email', 'card-name', 'card-number', 'card-expiry', 'card-cvc', 'billing-zip'];
+    const status = document.getElementById('payment-status');
+
+    const missing = requiredFields.filter(id => {
+        const input = document.getElementById(id);
+        return !input || !input.value.trim();
+    });
+
+    if (missing.length) {
+        if (status) {
+            status.textContent = 'Please complete all required payment details to continue.';
+            status.classList.add('error');
+        }
+        return false;
+    }
+
+    return true;
+}
+
+function buildReceiptMarkup(receiptId, totals, itemsSnapshot) {
+    const itemList = itemsSnapshot
+        .map(item => `${item.quantity} x ${item.title} (${formatCurrency(item.price * item.quantity)})`)
+        .join('</li><li>');
+
+    return `
+        <p><strong>Receipt:</strong> ${receiptId}</p>
+        <p><strong>Total Charged:</strong> ${formatCurrency(totals.total)} (${formatCurrency(totals.subtotal)} subtotal + ${formatCurrency(totals.tax)} tax)</p>
+        <p><strong>Items:</strong></p>
+        <ul><li>${itemList}</li></ul>
+        <p><strong>Download & Print:</strong> Lesson plans are ready instantly after this confirmation.</p>
+    `;
+}
+
+function handlePaymentSubmit(event) {
+    event.preventDefault();
+
+    const status = document.getElementById('payment-status');
+    const submitBtn = document.getElementById('submit-payment');
+    const receipt = document.getElementById('payment-receipt');
+    const receiptDetails = document.getElementById('receipt-details');
+    const receiptStatus = document.getElementById('receipt-status');
+
+    if (!shoppingCart.length) {
+        if (status) {
+            status.textContent = 'Add at least one item to your cart before checking out.';
+            status.classList.add('error');
+        }
+        return;
+    }
+
+    if (!validatePaymentForm()) {
+        return;
+    }
+
+    const totals = calculateCartTotals();
+    const itemsSnapshot = shoppingCart.map(item => ({ ...item }));
+
+    if (status) {
+        status.textContent = 'Authorizing payment...';
+        status.classList.remove('error');
+    }
+
+    if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Processing...';
+    }
+
+    setTimeout(() => {
+        const receiptId = `BCC-${Date.now().toString().slice(-6)}`;
+
+        if (receiptStatus) {
+            receiptStatus.textContent = `Payment approved • Confirmation ${receiptId}`;
+        }
+
+        if (receiptDetails) {
+            receiptDetails.innerHTML = buildReceiptMarkup(receiptId, totals, itemsSnapshot);
+        }
+
+        if (receipt) {
+            receipt.hidden = false;
+        }
+
+        if (status) {
+            status.textContent = 'Payment approved. Your receipt is ready below.';
+            status.classList.remove('error');
+        }
+
+        shoppingCart = [];
+        renderShoppingCart();
+
+        if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Pay now';
+        }
+    }, 1200);
 }
 
 function setStaffLoginRole(role) {
@@ -2318,6 +2501,22 @@ document.addEventListener('DOMContentLoaded', () => {
     if (cancelBtn) cancelBtn.onclick = () => closeTeacherPhotoModal();
     if (form) form.addEventListener('submit', handleTeacherPhotoFormSubmit);
     if (saveDraftBtn) saveDraftBtn.addEventListener('click', handleTeacherPhotoDraftSave);
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    const paymentForm = document.getElementById('payment-form');
+    const demoWalletBtn = document.getElementById('demo-wallet-button');
+
+    if (paymentForm) {
+        paymentForm.addEventListener('submit', handlePaymentSubmit);
+    }
+
+    if (demoWalletBtn) {
+        demoWalletBtn.addEventListener('click', prefillDemoWallet);
+    }
+
+    // Ensure totals and button states reflect the initial cart
+    renderShoppingCart();
 });
 
 function handleTeacherPhotoSelection(event) {
