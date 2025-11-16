@@ -391,6 +391,145 @@ const DEFAULT_CART_ITEMS = [
 
 let shoppingCart = [...DEFAULT_CART_ITEMS];
 
+const DEMO_PAYMENT_PROFILE = {
+    email: 'parent@demo.com',
+    name: 'Jennifer Smith',
+    cardNumber: '4242 4242 4242 4242',
+    expiry: '12/27',
+    cvc: '123',
+    zip: '43001'
+};
+
+// Store catalog
+const STORE_PRODUCTS = [
+    {
+        id: 'logo-tee-youth',
+        title: 'BCC Logo T-Shirt (Youth)',
+        description: 'Soft heather tee with the Bengal Christian Church logo. Perfect for Sunday or camp.',
+        price: 12.0,
+        badge: 'Church logo',
+        category: 'logo',
+        image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=400&q=70'
+    },
+    {
+        id: 'logo-tee-adult',
+        title: 'BCC Logo T-Shirt (Adult)',
+        description: 'Classic fit tee with the church logo in our ministry colors.',
+        price: 14.0,
+        badge: 'Church logo',
+        category: 'logo',
+        image: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=400&q=70'
+    },
+    {
+        id: 'logo-hoodie',
+        title: 'BCC Logo Hoodie',
+        description: 'Cozy midweight hoodie with a front pouch and embroidered logo.',
+        price: 32.0,
+        badge: 'Church logo',
+        category: 'logo',
+        image: 'https://images.unsplash.com/photo-1487222477894-8943e31ef7b2?auto=format&fit=crop&w=400&q=70'
+    },
+    {
+        id: 'logo-cap',
+        title: 'BCC Logo Cap',
+        description: 'Adjustable dad hat with stitched church logo for sunny Sundays.',
+        price: 16.0,
+        badge: 'Church logo',
+        category: 'logo',
+        image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=400&q=70'
+    },
+    {
+        id: 'logo-mug',
+        title: 'BCC Logo Mug',
+        description: '11oz ceramic mug with a wraparound church logo. Dishwasher and microwave safe.',
+        price: 8.5,
+        badge: 'Church logo',
+        category: 'logo',
+        image: 'https://images.unsplash.com/photo-1503602642458-232111445657?auto=format&fit=crop&w=400&q=70'
+    },
+    {
+        id: 'logo-sticker-pack',
+        title: 'Sticker Pack (5 pcs)',
+        description: 'Weatherproof stickers featuring the church logo and kids ministry colors.',
+        price: 3.5,
+        badge: 'Church logo',
+        category: 'logo',
+        image: 'https://images.unsplash.com/photo-1500989145603-8e7ef71d639e?auto=format&fit=crop&w=400&q=70'
+    },
+    {
+        id: 'family-devo-cards',
+        title: 'Family Devo Cards',
+        description: '30 bite-sized prompts to talk about faith around the dinner table.',
+        price: 4.0,
+        badge: 'Family study',
+        category: 'study',
+        image: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=400&q=70'
+    },
+    {
+        id: 'kids-bible-bookmarks',
+        title: 'Kids Bible Bookmarks',
+        description: 'Memory-verse bookmarks and prayer prompts kids can color and keep.',
+        price: 2.5,
+        badge: 'Family study',
+        category: 'study',
+        image: 'https://images.unsplash.com/photo-1545239351-46ef2854c2a9?auto=format&fit=crop&w=400&q=70'
+    },
+    {
+        id: 'family-prayer-guide',
+        title: 'Family Prayer Guide',
+        description: 'Weekly table talk prompts, bedtime blessings, and quick memory verses.',
+        price: 3.0,
+        badge: 'Family study',
+        category: 'study',
+        image: 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=400&q=70'
+    },
+    {
+        id: 'verse-memory-pack',
+        title: 'Verse Memory Pack',
+        description: 'Printable verse cards with games to practice Scripture together.',
+        price: 2.0,
+        badge: 'Family study',
+        category: 'study',
+        image: 'https://images.unsplash.com/photo-1521312709430-0f4d78a7ddc0?auto=format&fit=crop&w=400&q=70'
+    },
+    {
+        id: 'lesson-plan-advent',
+        title: 'Lesson Plan: Advent Hope',
+        description: 'Printable leader guide with craft and discussion questions for K-5.',
+        price: 0,
+        badge: 'Lesson plan',
+        category: 'lesson',
+        image: 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=400&q=70'
+    },
+    {
+        id: 'lesson-plan-parable',
+        title: 'Lesson Plan: Parable of the Lost Sheep',
+        description: 'Age-graded activities plus coloring page. Ready to print.',
+        price: 0,
+        badge: 'Lesson plan',
+        category: 'lesson',
+        image: 'https://images.unsplash.com/photo-1524250502761-1ac6f2e30d43?auto=format&fit=crop&w=400&q=70'
+    },
+    {
+        id: 'lesson-plan-armor',
+        title: 'Lesson Plan: Armor of God',
+        description: 'Take-home study sheet with a simple craft list for families.',
+        price: 0,
+        badge: 'Lesson plan',
+        category: 'lesson',
+        image: 'https://images.unsplash.com/photo-1545239351-46ef2854c2a9?auto=format&fit=crop&w=400&q=70'
+    },
+    {
+        id: 'lesson-plan-beatitudes',
+        title: 'Lesson Plan: Beatitudes for Kids',
+        description: 'Printable teaching script with application questions and a hands-on activity.',
+        price: 0,
+        badge: 'Lesson plan',
+        category: 'lesson',
+        image: 'https://images.unsplash.com/photo-1473181488821-2d23949a045a?auto=format&fit=crop&w=400&q=70'
+    }
+];
+
 // Demo user credentials
 const DEMO_USERS = {
     parent: {
@@ -422,11 +561,12 @@ const DEMO_USERS = {
 // Current filter state
 let currentCategory = 'all';
 let currentSubcategories = [];
+let currentStoreCategory = 'all';
 
 // Page Navigation
 function showPage(pageName) {
     const pageIds = ['home', 'about', 'staff', 'prek', 'elementary', 'events', 'volunteer',
-                     'resources', 'gallery', 'portals', 'parent-portal', 'teacher-portal',
+                     'resources', 'store', 'gallery', 'portals', 'parent-portal', 'teacher-portal',
                      'cart', 'contact', 'parent-dashboard', 'teacher-dashboard', 'lesson-plan-builder',
                      'resource-library', 'teacher-messages', 'admin-dashboard'];
     
@@ -457,6 +597,7 @@ function showPage(pageName) {
         'events': 'Events & Activities',
         'volunteer': 'Volunteer',
         'resources': 'Resources',
+        'store': 'Family Resource Shop',
         'gallery': 'Photo Gallery',
         'portals': 'Portal Access',
         'cart': 'Shopping Cart',
@@ -490,6 +631,10 @@ function showPage(pageName) {
 
     if (pageName === 'cart') {
         renderShoppingCart();
+    }
+
+    if (pageName === 'store') {
+        renderStoreProducts();
     }
 
     // On loading teacher-dashboard, re-render the lesson list
@@ -529,6 +674,35 @@ function calculateCartTotals() {
     return { subtotal, tax, total };
 }
 
+function updatePaymentPanel(totals = calculateCartTotals()) {
+    const payLabel = document.getElementById('payment-total-label');
+    const submitBtn = document.getElementById('submit-payment');
+    const checkoutBtn = document.getElementById('cart-checkout-button');
+    const paymentStatus = document.getElementById('payment-status');
+
+    if (payLabel) {
+        payLabel.textContent = `Total: ${formatCurrency(totals.total)}`;
+    }
+
+    if (submitBtn) {
+        submitBtn.textContent = totals.total === 0 ? 'Complete $0 checkout' : `Pay ${formatCurrency(totals.total)}`;
+        submitBtn.disabled = shoppingCart.length === 0;
+    }
+
+    if (checkoutBtn) {
+        checkoutBtn.onclick = () => {
+            document.getElementById('checkout-payment')?.scrollIntoView({ behavior: 'smooth' });
+            return false;
+        };
+        checkoutBtn.disabled = shoppingCart.length === 0;
+    }
+
+    if (paymentStatus && shoppingCart.length === 0) {
+        paymentStatus.textContent = 'Add items to your cart before checking out.';
+        paymentStatus.classList.add('error');
+    }
+}
+
 function renderShoppingCart() {
     const list = document.getElementById('cart-items');
     const count = document.getElementById('cart-count');
@@ -546,7 +720,7 @@ function renderShoppingCart() {
                 <div class="cart-item-details">
                     <h4>Your cart is empty</h4>
                     <p>Browse our resources to add printables, crafts, and lesson kits.</p>
-                    <button class="btn btn-secondary" onclick="showPage('resources'); return false;">Explore Resources</button>
+                    <button class="btn btn-secondary" onclick="showPage('resources'); return false;">Continue shopping</button>
                 </div>
             </article>
         `;
@@ -554,6 +728,7 @@ function renderShoppingCart() {
         subtotalEl.textContent = '$0.00';
         taxEl.textContent = '$0.00';
         totalEl.textContent = '$0.00';
+        updatePaymentPanel({ subtotal: 0, tax: 0, total: 0 });
         return;
     }
 
@@ -586,16 +761,101 @@ function renderShoppingCart() {
         fragment.appendChild(article);
     });
 
-    list.innerHTML = '';
-    list.appendChild(fragment);
+        list.innerHTML = '';
+        list.appendChild(fragment);
 
-    const itemCount = shoppingCart.reduce((sum, item) => sum + item.quantity, 0);
-    const totals = calculateCartTotals();
+        const itemCount = shoppingCart.reduce((sum, item) => sum + item.quantity, 0);
+        const totals = calculateCartTotals();
 
-    count.textContent = `${itemCount} ${itemCount === 1 ? 'item' : 'items'}`;
-    subtotalEl.textContent = formatCurrency(totals.subtotal);
-    taxEl.textContent = formatCurrency(totals.tax);
-    totalEl.textContent = formatCurrency(totals.total);
+        count.textContent = `${itemCount} ${itemCount === 1 ? 'item' : 'items'}`;
+        subtotalEl.textContent = formatCurrency(totals.subtotal);
+        taxEl.textContent = formatCurrency(totals.tax);
+        totalEl.textContent = formatCurrency(totals.total);
+
+        updatePaymentPanel(totals);
+}
+
+function renderStoreProducts() {
+    const grid = document.getElementById('store-grid');
+    const status = document.getElementById('store-status');
+    const filterButtons = document.querySelectorAll('.store-filters .btn-chip');
+
+    if (!grid || !status) return;
+
+    grid.setAttribute('aria-busy', 'true');
+
+    filterButtons.forEach(button => {
+        const category = button.id?.replace('filter-', '');
+        button.classList.toggle('active', category === currentStoreCategory);
+    });
+
+    const products = currentStoreCategory === 'all'
+        ? STORE_PRODUCTS
+        : STORE_PRODUCTS.filter(product => product.category === currentStoreCategory);
+
+    if (!products.length) {
+        grid.innerHTML = '<p class="store-empty">No products available in this category right now.</p>';
+        grid.setAttribute('aria-busy', 'false');
+        return;
+    }
+
+    const fragment = document.createDocumentFragment();
+
+    products.forEach(product => {
+        const card = document.createElement('article');
+        card.className = 'store-card';
+        card.innerHTML = `
+            <div class="store-card-image" style="background-image: url('${product.image}')" aria-hidden="true"></div>
+            <div class="store-card-body">
+                <div class="store-card-top">
+                    <span class="badge badge-info">${product.badge}</span>
+                    <span class="store-price">${product.price === 0 ? 'Free ($0.00)' : formatCurrency(product.price)}</span>
+                </div>
+                <h4>${product.title}</h4>
+                <p>${product.description}</p>
+                <div class="store-actions">
+                    <button class="btn" onclick="addStoreProductToCart('${product.id}')">Add to cart</button>
+                    <small class="store-delivery">${product.category === 'lesson' ? 'Printable after checkout' : 'Ships / instant download'}</small>
+                </div>
+            </div>
+        `;
+        fragment.appendChild(card);
+    });
+
+    grid.innerHTML = '';
+    grid.appendChild(fragment);
+    grid.setAttribute('aria-busy', 'false');
+}
+
+function setStoreFilter(category) {
+    currentStoreCategory = category;
+    renderStoreProducts();
+}
+
+function addStoreProductToCart(productId) {
+    const product = STORE_PRODUCTS.find(item => item.id === productId);
+    const status = document.getElementById('store-status');
+
+    if (!product || !status) return;
+
+    const existing = shoppingCart.find(item => item.id === product.id);
+    if (existing) {
+        existing.quantity += 1;
+    } else {
+        shoppingCart.push({ ...product, quantity: 1 });
+    }
+
+    const cartPage = document.getElementById('cart-page');
+    if (cartPage && cartPage.classList.contains('page-visible')) {
+        renderShoppingCart();
+    }
+
+    updatePaymentPanel(calculateCartTotals());
+
+    status.textContent = `${product.title} added to cart. ${product.price === 0 ? 'It will be ready to print after checkout.' : 'Continue to checkout when you are ready.'}`;
+    status.classList.add('active');
+
+    setTimeout(() => status.classList.remove('active'), 3500);
 }
 
 function adjustCartQuantity(itemId, delta) {
@@ -614,6 +874,127 @@ function adjustCartQuantity(itemId, delta) {
 function removeCartItem(itemId) {
     shoppingCart = shoppingCart.filter(product => product.id !== itemId);
     renderShoppingCart();
+}
+
+
+function prefillDemoWallet() {
+    const email = document.getElementById('payment-email');
+    const name = document.getElementById('card-name');
+    const number = document.getElementById('card-number');
+    const expiry = document.getElementById('card-expiry');
+    const cvc = document.getElementById('card-cvc');
+    const zip = document.getElementById('billing-zip');
+    const status = document.getElementById('payment-status');
+
+    if (email) email.value = DEMO_PAYMENT_PROFILE.email;
+    if (name) name.value = DEMO_PAYMENT_PROFILE.name;
+    if (number) number.value = DEMO_PAYMENT_PROFILE.cardNumber;
+    if (expiry) expiry.value = DEMO_PAYMENT_PROFILE.expiry;
+    if (cvc) cvc.value = DEMO_PAYMENT_PROFILE.cvc;
+    if (zip) zip.value = DEMO_PAYMENT_PROFILE.zip;
+
+    if (status) {
+        status.textContent = 'Demo wallet applied. Submit to simulate payment approval.';
+        status.classList.remove('error');
+    }
+}
+
+function validatePaymentForm() {
+    const requiredFields = ['payment-email', 'card-name', 'card-number', 'card-expiry', 'card-cvc', 'billing-zip'];
+    const status = document.getElementById('payment-status');
+
+    const missing = requiredFields.filter(id => {
+        const input = document.getElementById(id);
+        return !input || !input.value.trim();
+    });
+
+    if (missing.length) {
+        if (status) {
+            status.textContent = 'Please complete all required payment details to continue.';
+            status.classList.add('error');
+        }
+        return false;
+    }
+
+    return true;
+}
+
+function buildReceiptMarkup(receiptId, totals, itemsSnapshot) {
+    const itemList = itemsSnapshot
+        .map(item => `${item.quantity} x ${item.title} (${formatCurrency(item.price * item.quantity)})`)
+        .join('</li><li>');
+
+    return `
+        <p><strong>Receipt:</strong> ${receiptId}</p>
+        <p><strong>Total Charged:</strong> ${formatCurrency(totals.total)} (${formatCurrency(totals.subtotal)} subtotal + ${formatCurrency(totals.tax)} tax)</p>
+        <p><strong>Items:</strong></p>
+        <ul><li>${itemList}</li></ul>
+        <p><strong>Download & Print:</strong> Lesson plans are ready instantly after this confirmation.</p>
+    `;
+}
+
+function handlePaymentSubmit(event) {
+    event.preventDefault();
+
+    const status = document.getElementById('payment-status');
+    const submitBtn = document.getElementById('submit-payment');
+    const receipt = document.getElementById('payment-receipt');
+    const receiptDetails = document.getElementById('receipt-details');
+    const receiptStatus = document.getElementById('receipt-status');
+
+    if (!shoppingCart.length) {
+        if (status) {
+            status.textContent = 'Add at least one item to your cart before checking out.';
+            status.classList.add('error');
+        }
+        return;
+    }
+
+    if (!validatePaymentForm()) {
+        return;
+    }
+
+    const totals = calculateCartTotals();
+    const itemsSnapshot = shoppingCart.map(item => ({ ...item }));
+
+    if (status) {
+        status.textContent = 'Authorizing payment...';
+        status.classList.remove('error');
+    }
+
+    if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Processing...';
+    }
+
+    setTimeout(() => {
+        const receiptId = `BCC-${Date.now().toString().slice(-6)}`;
+
+        if (receiptStatus) {
+            receiptStatus.textContent = `Payment approved • Confirmation ${receiptId}`;
+        }
+
+        if (receiptDetails) {
+            receiptDetails.innerHTML = buildReceiptMarkup(receiptId, totals, itemsSnapshot);
+        }
+
+        if (receipt) {
+            receipt.hidden = false;
+        }
+
+        if (status) {
+            status.textContent = 'Payment approved. Your receipt is ready below.';
+            status.classList.remove('error');
+        }
+
+        shoppingCart = [];
+        renderShoppingCart();
+
+        if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Pay now';
+        }
+    }, 1200);
 }
 
 function setStaffLoginRole(role) {
@@ -2101,6 +2482,22 @@ document.addEventListener('DOMContentLoaded', () => {
     if (cancelBtn) cancelBtn.onclick = () => closeTeacherPhotoModal();
     if (form) form.addEventListener('submit', handleTeacherPhotoFormSubmit);
     if (saveDraftBtn) saveDraftBtn.addEventListener('click', handleTeacherPhotoDraftSave);
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    const paymentForm = document.getElementById('payment-form');
+    const demoWalletBtn = document.getElementById('demo-wallet-button');
+
+    if (paymentForm) {
+        paymentForm.addEventListener('submit', handlePaymentSubmit);
+    }
+
+    if (demoWalletBtn) {
+        demoWalletBtn.addEventListener('click', prefillDemoWallet);
+    }
+
+    // Ensure totals and button states reflect the initial cart
+    renderShoppingCart();
 });
 
 function handleTeacherPhotoSelection(event) {
