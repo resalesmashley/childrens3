@@ -391,6 +391,82 @@ const DEFAULT_CART_ITEMS = [
 
 let shoppingCart = [...DEFAULT_CART_ITEMS];
 
+// Store catalog
+const STORE_PRODUCTS = [
+    {
+        id: 'logo-tee-youth',
+        title: 'BCC Logo T-Shirt (Youth)',
+        description: 'Soft heather tee with the Bengal Christian Church logo. Perfect for Sunday or camp.',
+        price: 12.0,
+        badge: 'Church logo',
+        category: 'logo',
+        image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=400&q=70'
+    },
+    {
+        id: 'logo-mug',
+        title: 'BCC Logo Mug',
+        description: '11oz ceramic mug with a wraparound church logo. Dishwasher and microwave safe.',
+        price: 8.5,
+        badge: 'Church logo',
+        category: 'logo',
+        image: 'https://images.unsplash.com/photo-1503602642458-232111445657?auto=format&fit=crop&w=400&q=70'
+    },
+    {
+        id: 'logo-sticker-pack',
+        title: 'Sticker Pack (5 pcs)',
+        description: 'Weatherproof stickers featuring the church logo and kids ministry colors.',
+        price: 3.5,
+        badge: 'Church logo',
+        category: 'logo',
+        image: 'https://images.unsplash.com/photo-1500989145603-8e7ef71d639e?auto=format&fit=crop&w=400&q=70'
+    },
+    {
+        id: 'family-devo-cards',
+        title: 'Family Devo Cards',
+        description: '30 bite-sized prompts to talk about faith around the dinner table.',
+        price: 4.0,
+        badge: 'Family study',
+        category: 'study',
+        image: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=400&q=70'
+    },
+    {
+        id: 'kids-bible-bookmarks',
+        title: 'Kids Bible Bookmarks',
+        description: 'Memory-verse bookmarks and prayer prompts kids can color and keep.',
+        price: 2.5,
+        badge: 'Family study',
+        category: 'study',
+        image: 'https://images.unsplash.com/photo-1545239351-46ef2854c2a9?auto=format&fit=crop&w=400&q=70'
+    },
+    {
+        id: 'lesson-plan-advent',
+        title: 'Lesson Plan: Advent Hope',
+        description: 'Printable leader guide with craft and discussion questions for K-5.',
+        price: 0,
+        badge: 'Lesson plan',
+        category: 'lesson',
+        image: 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=400&q=70'
+    },
+    {
+        id: 'lesson-plan-parable',
+        title: 'Lesson Plan: Parable of the Lost Sheep',
+        description: 'Age-graded activities plus coloring page. Ready to print.',
+        price: 0,
+        badge: 'Lesson plan',
+        category: 'lesson',
+        image: 'https://images.unsplash.com/photo-1524250502761-1ac6f2e30d43?auto=format&fit=crop&w=400&q=70'
+    },
+    {
+        id: 'lesson-plan-armor',
+        title: 'Lesson Plan: Armor of God',
+        description: 'Take-home study sheet with a simple craft list for families.',
+        price: 0,
+        badge: 'Lesson plan',
+        category: 'lesson',
+        image: 'https://images.unsplash.com/photo-1545239351-46ef2854c2a9?auto=format&fit=crop&w=400&q=70'
+    }
+];
+
 // Demo user credentials
 const DEMO_USERS = {
     parent: {
@@ -422,11 +498,12 @@ const DEMO_USERS = {
 // Current filter state
 let currentCategory = 'all';
 let currentSubcategories = [];
+let currentStoreCategory = 'all';
 
 // Page Navigation
 function showPage(pageName) {
     const pageIds = ['home', 'about', 'staff', 'prek', 'elementary', 'events', 'volunteer',
-                     'resources', 'gallery', 'portals', 'parent-portal', 'teacher-portal',
+                     'resources', 'store', 'gallery', 'portals', 'parent-portal', 'teacher-portal',
                      'cart', 'contact', 'parent-dashboard', 'teacher-dashboard', 'lesson-plan-builder',
                      'resource-library', 'teacher-messages', 'admin-dashboard'];
     
@@ -457,6 +534,7 @@ function showPage(pageName) {
         'events': 'Events & Activities',
         'volunteer': 'Volunteer',
         'resources': 'Resources',
+        'store': 'Family Resource Shop',
         'gallery': 'Photo Gallery',
         'portals': 'Portal Access',
         'cart': 'Shopping Cart',
@@ -490,6 +568,10 @@ function showPage(pageName) {
 
     if (pageName === 'cart') {
         renderShoppingCart();
+    }
+
+    if (pageName === 'store') {
+        renderStoreProducts();
     }
 
     // On loading teacher-dashboard, re-render the lesson list
@@ -596,6 +678,87 @@ function renderShoppingCart() {
     subtotalEl.textContent = formatCurrency(totals.subtotal);
     taxEl.textContent = formatCurrency(totals.tax);
     totalEl.textContent = formatCurrency(totals.total);
+}
+
+function renderStoreProducts() {
+    const grid = document.getElementById('store-grid');
+    const status = document.getElementById('store-status');
+    const filterButtons = document.querySelectorAll('.store-filters .btn-chip');
+
+    if (!grid || !status) return;
+
+    grid.setAttribute('aria-busy', 'true');
+
+    filterButtons.forEach(button => {
+        const category = button.id?.replace('filter-', '');
+        button.classList.toggle('active', category === currentStoreCategory);
+    });
+
+    const products = currentStoreCategory === 'all'
+        ? STORE_PRODUCTS
+        : STORE_PRODUCTS.filter(product => product.category === currentStoreCategory);
+
+    if (!products.length) {
+        grid.innerHTML = '<p class="store-empty">No products available in this category right now.</p>';
+        grid.setAttribute('aria-busy', 'false');
+        return;
+    }
+
+    const fragment = document.createDocumentFragment();
+
+    products.forEach(product => {
+        const card = document.createElement('article');
+        card.className = 'store-card';
+        card.innerHTML = `
+            <div class="store-card-image" style="background-image: url('${product.image}')" aria-hidden="true"></div>
+            <div class="store-card-body">
+                <div class="store-card-top">
+                    <span class="badge badge-info">${product.badge}</span>
+                    <span class="store-price">${product.price === 0 ? 'Free ($0.00)' : formatCurrency(product.price)}</span>
+                </div>
+                <h4>${product.title}</h4>
+                <p>${product.description}</p>
+                <div class="store-actions">
+                    <button class="btn" onclick="addStoreProductToCart('${product.id}')">Add to cart</button>
+                    <small class="store-delivery">${product.category === 'lesson' ? 'Printable after checkout' : 'Ships / instant download'}</small>
+                </div>
+            </div>
+        `;
+        fragment.appendChild(card);
+    });
+
+    grid.innerHTML = '';
+    grid.appendChild(fragment);
+    grid.setAttribute('aria-busy', 'false');
+}
+
+function setStoreFilter(category) {
+    currentStoreCategory = category;
+    renderStoreProducts();
+}
+
+function addStoreProductToCart(productId) {
+    const product = STORE_PRODUCTS.find(item => item.id === productId);
+    const status = document.getElementById('store-status');
+
+    if (!product || !status) return;
+
+    const existing = shoppingCart.find(item => item.id === product.id);
+    if (existing) {
+        existing.quantity += 1;
+    } else {
+        shoppingCart.push({ ...product, quantity: 1 });
+    }
+
+    const cartPage = document.getElementById('cart-page');
+    if (cartPage && cartPage.classList.contains('page-visible')) {
+        renderShoppingCart();
+    }
+
+    status.textContent = `${product.title} added to cart. ${product.price === 0 ? 'It will be ready to print after checkout.' : 'Continue to checkout when you are ready.'}`;
+    status.classList.add('active');
+
+    setTimeout(() => status.classList.remove('active'), 3500);
 }
 
 function adjustCartQuantity(itemId, delta) {

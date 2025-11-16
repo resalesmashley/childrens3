@@ -74,6 +74,7 @@
                         <li><a href="#" onclick="showPage('events'); return false;" id="nav-events">Events</a></li>
                         <li><a href="#" onclick="showPage('volunteer'); return false;" id="nav-volunteer">Volunteer</a></li>
                         <li><a href="#" onclick="showPage('resources'); return false;" id="nav-resources">Resources</a></li>
+                        <li><a href="#" onclick="showPage('store'); return false;" id="nav-store">Store</a></li>
                         <li><a href="#" onclick="showPage('gallery'); return false;" id="nav-gallery">Gallery</a></li>
                         <li><a href="#" onclick="showPage('portals'); return false;" id="nav-portals">Portals</a></li>
                         <li><a href="#" onclick="showPage('cart'); return false;" id="nav-cart">Shopping Cart</a></li>
@@ -481,6 +482,52 @@
                                 <div class="resource-icon">🗣️</div>
                                 <strong>Conversation Starters</strong>
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="store-page" class="page-hidden">
+                    <div class="content-section store-hero">
+                        <div>
+                            <p class="eyebrow">Family Resource Shop</p>
+                            <h2>Church Gear, Family Guides, and Free Lesson Plans</h2>
+                            <p>Pick up a few low-cost tools for home discipleship and grab printable lesson plans to share or print after checkout.</p>
+                            <div class="store-hero-actions">
+                                <button class="btn" onclick="showPage('cart'); return false;">View Cart</button>
+                                <button class="btn btn-secondary" onclick="showPage('resources'); return false;">Browse Resources</button>
+                            </div>
+                        </div>
+                        <div class="store-hero-perks">
+                            <div class="store-perk">💳 Secure checkout</div>
+                            <div class="store-perk">📄 Lesson plans are $0</div>
+                            <div class="store-perk">📦 Ships from BCC</div>
+                        </div>
+                    </div>
+
+                    <div class="content-section">
+                        <div class="store-header">
+                            <div>
+                                <p class="eyebrow">Shop by focus</p>
+                                <h3>Choose what you need this week</h3>
+                                <p class="store-subtext">Logo gear for the family, simple take-home study aids, and printable lesson plans you can add for $0.00 and print after checkout.</p>
+                            </div>
+                            <div class="store-filters" role="group" aria-label="Store filters">
+                                <button class="btn btn-chip active" id="filter-all" onclick="setStoreFilter('all');">All</button>
+                                <button class="btn btn-chip" id="filter-logo" onclick="setStoreFilter('logo');">Church Logo</button>
+                                <button class="btn btn-chip" id="filter-study" onclick="setStoreFilter('study');">Family Study</button>
+                                <button class="btn btn-chip" id="filter-lesson" onclick="setStoreFilter('lesson');">Lesson Plans ($0)</button>
+                            </div>
+                        </div>
+
+                        <div id="store-status" class="store-status" role="status" aria-live="polite"></div>
+
+                        <div id="store-grid" class="store-grid" aria-live="polite" aria-busy="false">
+                            <!-- Products rendered by script.js -->
+                        </div>
+
+                        <div class="store-footnote">
+                            <p><strong>Need a printout?</strong> Add free lesson plans to your cart, check out, and download the ready-to-print PDF packet.</p>
+                            <button class="btn" onclick="showPage('cart'); return false;">Go to checkout</button>
                         </div>
                     </div>
                 </div>
