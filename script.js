@@ -403,6 +403,33 @@ const STORE_PRODUCTS = [
         image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=400&q=70'
     },
     {
+        id: 'logo-tee-adult',
+        title: 'BCC Logo T-Shirt (Adult)',
+        description: 'Classic fit tee with the church logo in our ministry colors.',
+        price: 14.0,
+        badge: 'Church logo',
+        category: 'logo',
+        image: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=400&q=70'
+    },
+    {
+        id: 'logo-hoodie',
+        title: 'BCC Logo Hoodie',
+        description: 'Cozy midweight hoodie with a front pouch and embroidered logo.',
+        price: 32.0,
+        badge: 'Church logo',
+        category: 'logo',
+        image: 'https://images.unsplash.com/photo-1487222477894-8943e31ef7b2?auto=format&fit=crop&w=400&q=70'
+    },
+    {
+        id: 'logo-cap',
+        title: 'BCC Logo Cap',
+        description: 'Adjustable dad hat with stitched church logo for sunny Sundays.',
+        price: 16.0,
+        badge: 'Church logo',
+        category: 'logo',
+        image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=400&q=70'
+    },
+    {
         id: 'logo-mug',
         title: 'BCC Logo Mug',
         description: '11oz ceramic mug with a wraparound church logo. Dishwasher and microwave safe.',
@@ -439,6 +466,24 @@ const STORE_PRODUCTS = [
         image: 'https://images.unsplash.com/photo-1545239351-46ef2854c2a9?auto=format&fit=crop&w=400&q=70'
     },
     {
+        id: 'family-prayer-guide',
+        title: 'Family Prayer Guide',
+        description: 'Weekly table talk prompts, bedtime blessings, and quick memory verses.',
+        price: 3.0,
+        badge: 'Family study',
+        category: 'study',
+        image: 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=400&q=70'
+    },
+    {
+        id: 'verse-memory-pack',
+        title: 'Verse Memory Pack',
+        description: 'Printable verse cards with games to practice Scripture together.',
+        price: 2.0,
+        badge: 'Family study',
+        category: 'study',
+        image: 'https://images.unsplash.com/photo-1521312709430-0f4d78a7ddc0?auto=format&fit=crop&w=400&q=70'
+    },
+    {
         id: 'lesson-plan-advent',
         title: 'Lesson Plan: Advent Hope',
         description: 'Printable leader guide with craft and discussion questions for K-5.',
@@ -464,6 +509,15 @@ const STORE_PRODUCTS = [
         badge: 'Lesson plan',
         category: 'lesson',
         image: 'https://images.unsplash.com/photo-1545239351-46ef2854c2a9?auto=format&fit=crop&w=400&q=70'
+    },
+    {
+        id: 'lesson-plan-beatitudes',
+        title: 'Lesson Plan: Beatitudes for Kids',
+        description: 'Printable teaching script with application questions and a hands-on activity.',
+        price: 0,
+        badge: 'Lesson plan',
+        category: 'lesson',
+        image: 'https://images.unsplash.com/photo-1473181488821-2d23949a045a?auto=format&fit=crop&w=400&q=70'
     }
 ];
 
