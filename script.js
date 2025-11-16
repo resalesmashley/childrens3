@@ -724,6 +724,24 @@ function renderShoppingCart() {
                 </div>
             </article>
         `;
+        list.innerHTML = `
+            <article class="cart-item empty-cart">
+                <div class="cart-item-details">
+                    <h4>Your cart is empty</h4>
+                    <p>Browse our resources to add printables, crafts, and lesson kits.</p>
+                    <button class="btn btn-secondary" onclick="showPage('resources'); return false;">Continue shopping</button>
+                </div>
+            </article>
+        `;
+        list.innerHTML = `
+            <article class="cart-item empty-cart">
+                <div class="cart-item-details">
+                    <h4>Your cart is empty</h4>
+                    <p>Browse our resources to add printables, crafts, and lesson kits.</p>
+                    <button class="btn btn-secondary" onclick="showPage('resources'); return false;">Explore Resources</button>
+                </div>
+            </article>
+        `;
         count.textContent = '0 items';
         subtotalEl.textContent = '$0.00';
         taxEl.textContent = '$0.00';
@@ -773,6 +791,16 @@ function renderShoppingCart() {
         totalEl.textContent = formatCurrency(totals.total);
 
         updatePaymentPanel(totals);
+    list.innerHTML = '';
+    list.appendChild(fragment);
+
+    const itemCount = shoppingCart.reduce((sum, item) => sum + item.quantity, 0);
+    const totals = calculateCartTotals();
+
+    count.textContent = `${itemCount} ${itemCount === 1 ? 'item' : 'items'}`;
+    subtotalEl.textContent = formatCurrency(totals.subtotal);
+    taxEl.textContent = formatCurrency(totals.tax);
+    totalEl.textContent = formatCurrency(totals.total);
 }
 
 function renderStoreProducts() {
