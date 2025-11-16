@@ -773,6 +773,16 @@ function renderShoppingCart() {
         totalEl.textContent = formatCurrency(totals.total);
 
         updatePaymentPanel(totals);
+    list.innerHTML = '';
+    list.appendChild(fragment);
+
+    const itemCount = shoppingCart.reduce((sum, item) => sum + item.quantity, 0);
+    const totals = calculateCartTotals();
+
+    count.textContent = `${itemCount} ${itemCount === 1 ? 'item' : 'items'}`;
+    subtotalEl.textContent = formatCurrency(totals.subtotal);
+    taxEl.textContent = formatCurrency(totals.tax);
+    totalEl.textContent = formatCurrency(totals.total);
 }
 
 function renderStoreProducts() {
