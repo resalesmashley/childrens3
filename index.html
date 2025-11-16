@@ -219,7 +219,7 @@
                                 </div>
                                 <div class="summary-actions">
                                     <button class="btn btn-secondary" onclick="showPage('resources'); return false;">Continue Shopping</button>
-                                    <button class="btn" id="cart-checkout-button" aria-label="Proceed to checkout">Proceed to Checkout</button>
+                                    <button class="btn" aria-label="Proceed to checkout">Proceed to Checkout</button>
                                 </div>
                                 <ul class="summary-perks">
                                     <li>Instant access to digital downloads</li>
@@ -228,78 +228,6 @@
                                 </ul>
                             </aside>
                         </div>
-
-                        <section class="payment-section" id="checkout-payment" aria-label="Checkout and Payment">
-                            <div class="payment-card">
-                                <div class="payment-header">
-                                    <div>
-                                        <p class="eyebrow">Step 2 of 3</p>
-                                        <h3>Payment Details</h3>
-                                        <p>Use the secure demo form to authorize payment for the items in your cart.</p>
-                                    </div>
-                                    <div class="payment-icons" aria-hidden="true">
-                                        <span>💳</span>
-                                        <span>💻</span>
-                                        <span>✅</span>
-                                    </div>
-                                </div>
-
-                                <form id="payment-form" class="payment-form" novalidate>
-                                    <div class="payment-grid">
-                                        <label class="form-field">
-                                            <span>Contact email</span>
-                                            <input type="email" id="payment-email" placeholder="you@example.com" required>
-                                        </label>
-                                        <label class="form-field">
-                                            <span>Name on card</span>
-                                            <input type="text" id="card-name" placeholder="Full name" required>
-                                        </label>
-                                        <label class="form-field">
-                                            <span>Card number</span>
-                                            <input type="text" id="card-number" inputmode="numeric" maxlength="19" placeholder="4242 4242 4242 4242" required>
-                                        </label>
-                                        <label class="form-field">
-                                            <span>Expiry</span>
-                                            <input type="text" id="card-expiry" inputmode="numeric" maxlength="7" placeholder="12/27" required>
-                                        </label>
-                                        <label class="form-field">
-                                            <span>CVC</span>
-                                            <input type="text" id="card-cvc" inputmode="numeric" maxlength="4" placeholder="123" required>
-                                        </label>
-                                        <label class="form-field">
-                                            <span>Billing ZIP</span>
-                                            <input type="text" id="billing-zip" inputmode="numeric" maxlength="10" placeholder="43001" required>
-                                        </label>
-                                    </div>
-
-                                    <div class="payment-actions">
-                                        <button type="button" class="btn btn-secondary" id="demo-wallet-button">Use saved demo wallet</button>
-                                        <div class="payment-submit-group">
-                                            <small id="payment-total-label">Total: $0.00</small>
-                                            <button type="submit" class="btn" id="submit-payment">Pay now</button>
-                                        </div>
-                                    </div>
-                                    <p class="payment-helper">This prototype simulates a secure checkout. Use the pre-filled demo wallet or enter sample card details to see the confirmation.</p>
-                                    <div id="payment-status" class="payment-status" role="status" aria-live="polite"></div>
-                                </form>
-                            </div>
-
-                            <aside class="payment-receipt" id="payment-receipt" hidden>
-                                <div class="receipt-header">
-                                    <div>
-                                        <p class="eyebrow">Step 3 of 3</p>
-                                        <h4>Payment Confirmation</h4>
-                                        <p id="receipt-status">No payment completed yet.</p>
-                                    </div>
-                                    <span class="receipt-icon" aria-hidden="true">📥</span>
-                                </div>
-                                <div id="receipt-details" class="receipt-details"></div>
-                                <div class="receipt-footer">
-                                    <p>Digital lesson plans will be available to print immediately after checkout.</p>
-                                    <p class="muted">Prototype only — no real charges are made.</p>
-                                </div>
-                            </aside>
-                        </section>
                     </div>
                 </div>
 
