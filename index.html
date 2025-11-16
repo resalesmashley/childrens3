@@ -74,6 +74,7 @@
                         <li><a href="#" onclick="showPage('events'); return false;" id="nav-events">Events</a></li>
                         <li><a href="#" onclick="showPage('volunteer'); return false;" id="nav-volunteer">Volunteer</a></li>
                         <li><a href="#" onclick="showPage('resources'); return false;" id="nav-resources">Resources</a></li>
+                        <li><a href="#" onclick="showPage('store'); return false;" id="nav-store">Store</a></li>
                         <li><a href="#" onclick="showPage('gallery'); return false;" id="nav-gallery">Gallery</a></li>
                         <li><a href="#" onclick="showPage('portals'); return false;" id="nav-portals">Portals</a></li>
                         <li><a href="#" onclick="showPage('cart'); return false;" id="nav-cart">Shopping Cart</a></li>
@@ -218,7 +219,7 @@
                                 </div>
                                 <div class="summary-actions">
                                     <button class="btn btn-secondary" onclick="showPage('resources'); return false;">Continue Shopping</button>
-                                    <button class="btn" aria-label="Proceed to checkout">Proceed to Checkout</button>
+                                    <button class="btn" id="cart-checkout-button" aria-label="Proceed to checkout">Proceed to Checkout</button>
                                 </div>
                                 <ul class="summary-perks">
                                     <li>Instant access to digital downloads</li>
@@ -227,6 +228,78 @@
                                 </ul>
                             </aside>
                         </div>
+
+                        <section class="payment-section" id="checkout-payment" aria-label="Checkout and Payment">
+                            <div class="payment-card">
+                                <div class="payment-header">
+                                    <div>
+                                        <p class="eyebrow">Step 2 of 3</p>
+                                        <h3>Payment Details</h3>
+                                        <p>Use the secure demo form to authorize payment for the items in your cart.</p>
+                                    </div>
+                                    <div class="payment-icons" aria-hidden="true">
+                                        <span>💳</span>
+                                        <span>💻</span>
+                                        <span>✅</span>
+                                    </div>
+                                </div>
+
+                                <form id="payment-form" class="payment-form" novalidate>
+                                    <div class="payment-grid">
+                                        <label class="form-field">
+                                            <span>Contact email</span>
+                                            <input type="email" id="payment-email" placeholder="you@example.com" required>
+                                        </label>
+                                        <label class="form-field">
+                                            <span>Name on card</span>
+                                            <input type="text" id="card-name" placeholder="Full name" required>
+                                        </label>
+                                        <label class="form-field">
+                                            <span>Card number</span>
+                                            <input type="text" id="card-number" inputmode="numeric" maxlength="19" placeholder="4242 4242 4242 4242" required>
+                                        </label>
+                                        <label class="form-field">
+                                            <span>Expiry</span>
+                                            <input type="text" id="card-expiry" inputmode="numeric" maxlength="7" placeholder="12/27" required>
+                                        </label>
+                                        <label class="form-field">
+                                            <span>CVC</span>
+                                            <input type="text" id="card-cvc" inputmode="numeric" maxlength="4" placeholder="123" required>
+                                        </label>
+                                        <label class="form-field">
+                                            <span>Billing ZIP</span>
+                                            <input type="text" id="billing-zip" inputmode="numeric" maxlength="10" placeholder="43001" required>
+                                        </label>
+                                    </div>
+
+                                    <div class="payment-actions">
+                                        <button type="button" class="btn btn-secondary" id="demo-wallet-button">Use saved demo wallet</button>
+                                        <div class="payment-submit-group">
+                                            <small id="payment-total-label">Total: $0.00</small>
+                                            <button type="submit" class="btn" id="submit-payment">Pay now</button>
+                                        </div>
+                                    </div>
+                                    <p class="payment-helper">This prototype simulates a secure checkout. Use the pre-filled demo wallet or enter sample card details to see the confirmation.</p>
+                                    <div id="payment-status" class="payment-status" role="status" aria-live="polite"></div>
+                                </form>
+                            </div>
+
+                            <aside class="payment-receipt" id="payment-receipt" hidden>
+                                <div class="receipt-header">
+                                    <div>
+                                        <p class="eyebrow">Step 3 of 3</p>
+                                        <h4>Payment Confirmation</h4>
+                                        <p id="receipt-status">No payment completed yet.</p>
+                                    </div>
+                                    <span class="receipt-icon" aria-hidden="true">📥</span>
+                                </div>
+                                <div id="receipt-details" class="receipt-details"></div>
+                                <div class="receipt-footer">
+                                    <p>Digital lesson plans will be available to print immediately after checkout.</p>
+                                    <p class="muted">Prototype only — no real charges are made.</p>
+                                </div>
+                            </aside>
+                        </section>
                     </div>
                 </div>
 
@@ -481,6 +554,52 @@
                                 <div class="resource-icon">🗣️</div>
                                 <strong>Conversation Starters</strong>
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="store-page" class="page-hidden">
+                    <div class="content-section store-hero">
+                        <div>
+                            <p class="eyebrow">Family Resource Shop</p>
+                            <h2>Church Gear, Family Guides, and Free Lesson Plans</h2>
+                            <p>Pick up a few low-cost tools for home discipleship and grab printable lesson plans to share or print after checkout.</p>
+                            <div class="store-hero-actions">
+                                <button class="btn" onclick="showPage('cart'); return false;">View Cart</button>
+                                <button class="btn btn-secondary" onclick="showPage('resources'); return false;">Browse Resources</button>
+                            </div>
+                        </div>
+                        <div class="store-hero-perks">
+                            <div class="store-perk">💳 Secure checkout</div>
+                            <div class="store-perk">📄 Lesson plans are $0</div>
+                            <div class="store-perk">📦 Ships from BCC</div>
+                        </div>
+                    </div>
+
+                    <div class="content-section">
+                        <div class="store-header">
+                            <div>
+                                <p class="eyebrow">Shop by focus</p>
+                                <h3>Choose what you need this week</h3>
+                                <p class="store-subtext">Logo gear for the family, simple take-home study aids, and printable lesson plans you can add for $0.00 and print after checkout.</p>
+                            </div>
+                            <div class="store-filters" role="group" aria-label="Store filters">
+                                <button class="btn btn-chip active" id="filter-all" onclick="setStoreFilter('all');">All</button>
+                                <button class="btn btn-chip" id="filter-logo" onclick="setStoreFilter('logo');">Church Logo</button>
+                                <button class="btn btn-chip" id="filter-study" onclick="setStoreFilter('study');">Family Study</button>
+                                <button class="btn btn-chip" id="filter-lesson" onclick="setStoreFilter('lesson');">Lesson Plans ($0)</button>
+                            </div>
+                        </div>
+
+                        <div id="store-status" class="store-status" role="status" aria-live="polite"></div>
+
+                        <div id="store-grid" class="store-grid" aria-live="polite" aria-busy="false">
+                            <!-- Products rendered by script.js -->
+                        </div>
+
+                        <div class="store-footnote">
+                            <p><strong>Need a printout?</strong> Add free lesson plans to your cart, check out, and download the ready-to-print PDF packet.</p>
+                            <button class="btn" onclick="showPage('cart'); return false;">Go to checkout</button>
                         </div>
                     </div>
                 </div>
